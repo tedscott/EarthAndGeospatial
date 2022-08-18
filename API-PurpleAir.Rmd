@@ -126,7 +126,7 @@ AQI_from_PM <- function(pm25) {
 data <- data %>% mutate(US_EPA_PM25_AQI = AQI_from_PM(stats.pm2.5_10minute))
 
 # test it
-#data$US_EPA_PM25_AQI
+data$US_EPA_PM25_AQI
 # working!
 
 ```
@@ -135,4 +135,12 @@ data <- data %>% mutate(US_EPA_PM25_AQI = AQI_from_PM(stats.pm2.5_10minute))
 ### maybe a Leaflet interactive - see the twitter sentiment assignment
 ### can have a popup with all the stats I care about,  
 ### not just the one value on the purpleair map
+
+```{r}
+
+
+
+```
+
+# and then on to a shiny dashboard
 
