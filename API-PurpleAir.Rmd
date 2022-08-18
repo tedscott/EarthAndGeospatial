@@ -60,11 +60,11 @@ data
 ```{r}
 # consult API for more params
 # https://api.purpleair.com/#api-sensors-get-sensor-history
-r <- GET("https://api.purpleair.com/v1/sensors/154517/history/csv", 
+r2 <- GET("https://api.purpleair.com/v1/sensors/154517/history/csv", 
          query = list(api_key = '6B64127F-1D79-11ED-8561-42010A800005'))
 
-r
-fromJSON(rawToChar(r$content))
+r2
+fromJSON(rawToChar(r2$content))
 
 # oh, they restricted the access to this
 # see https://community.purpleair.com/t/historical-api-endpoints-are-now-restricted/1557
@@ -80,9 +80,59 @@ fromJSON(rawToChar(r$content))
 ```{r}
 
 # going to need a function
+# example code in PHP:
+# https://community.purpleair.com/t/how-to-calculate-the-us-epa-pm2-5-aqi/877/5
 
+#                                  AQI         RAW PM2.5
+	# Good                               0 - 50   |   0.0 – 12.0
+	# Moderate                          51 - 100  |  12.1 – 35.4
+	# Unhealthy for Sensitive Groups   101 – 150  |  35.5 – 55.4
+	# Unhealthy                        151 – 200  |  55.5 – 150.4
+	# Very Unhealthy                   201 – 300  |  150.5 – 250.4
+	# Hazardous                        301 – 400  |  250.5 – 350.4
+	# Hazardous                        401 – 500  |  350.5 – 500.4
 
+# do the calc - what do these variables stand for?
+Calc_AQI <- function(Cp, Ih, I1, BPh, BP1) {
+  a <- (Ih - I1)
+  b <- (BPh - BP1)
+  c <- (Cp - BP1)
+  return (round((a/b) * c + I1))
+}
+
+AQI_from_PM <- function(pm25) {
+  # check if valid
+  if(pm25 > 0 & pm25 < 1000) {
+    if(pm25 > 350.5) return (Calc_AQI(pm25, 500, 401, 500.4, 350.5)) # hazardous
+    else if(pm25 > 250.5) return (Calc_AQI(pm25, 400, 301, 350.4, 250.5)) # hazardou
+    else if(pm25 > 150.5) return (Calc_AQI(pm25, 300, 201, 250.4, 150.5)) # very unhealthy
+    else if(pm25 > 55.5) return (Calc_AQI(pm25, 200, 151, 150.4, 55.5)) # Unhealthy
+    else if(pm25 > 35.5) return (Calc_AQI(pm25, 150, 101, 55.4, 35.5)) # Unhealthy for sensitive groups
+    else if(pm25 > 12.1) return (Calc_AQI(pm25, 100, 51, 35.4, 12.1)) # Moderate
+    else if(pm25 > 0) return (Calc_AQI(pm25, 50, 0, 12, 0)) # good
+  }
+  else return (NaN) # was not valid pm25
+}
+
+# could also structure it as a case_when
+
+# test it
+# Calc_AQI(200,300,201,250.4,150.5)
+# AQI_from_PM(200)
+# AQI_from_PM(1200)
+# working
+
+# add AQI as a column
+data <- data %>% mutate(US_EPA_PM25_AQI = AQI_from_PM(stats.pm2.5_10minute))
+
+# test it
+#data$US_EPA_PM25_AQI
+# working!
 
 ```
 
+# Should also build a map of my own
+### maybe a Leaflet interactive - see the twitter sentiment assignment
+### can have a popup with all the stats I care about,  
+### not just the one value on the purpleair map
 
