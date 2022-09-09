@@ -12,7 +12,7 @@ output: html_notebook
 library(httr)
 library(jsonlite)
 library(tidyverse)
-
+library(leaflet)
 ```
 
 # make a request from the PurpleAir API for my sensor
@@ -38,14 +38,15 @@ rawdata = fromJSON(response)
 
 # H The humidity inside the sensor’s housing - this humidity reading will # be approximately 4% lower than ambient conditions due to heat generated # by the WiFi module in the sensor’s control board.
 rawdata$sensor$temperature - 8
+rawdata$sensor$humidity + 4
 
-# correct value to match map
+# correct value to match map - check it
 rawdata$sensor$stats$pm2.5_10minute
 
 
 # to get to the sensor data can build a DF from the sensor data blob
-data <- data.frame(rawdata$sensor)
-data
+sensordata <- data.frame(rawdata$sensor)
+sensordata
 
 # not sure that's useful but?
 
@@ -60,11 +61,11 @@ data
 ```{r}
 # consult API for more params
 # https://api.purpleair.com/#api-sensors-get-sensor-history
-r2 <- GET("https://api.purpleair.com/v1/sensors/154517/history/csv", 
-         query = list(api_key = '6B64127F-1D79-11ED-8561-42010A800005'))
-
-r2
-fromJSON(rawToChar(r2$content))
+# r2 <- GET("https://api.purpleair.com/v1/sensors/154517/history/csv", 
+#          query = list(api_key = '6B64127F-1D79-11ED-8561-42010A800005'))
+# 
+# r2
+# fromJSON(rawToChar(r2$content))
 
 # oh, they restricted the access to this
 # see https://community.purpleair.com/t/historical-api-endpoints-are-now-restricted/1557
@@ -104,7 +105,7 @@ AQI_from_PM <- function(pm25) {
   # check if valid
   if(pm25 > 0 & pm25 < 1000) {
     if(pm25 > 350.5) return (Calc_AQI(pm25, 500, 401, 500.4, 350.5)) # hazardous
-    else if(pm25 > 250.5) return (Calc_AQI(pm25, 400, 301, 350.4, 250.5)) # hazardou
+    else if(pm25 > 250.5) return (Calc_AQI(pm25, 400, 301, 350.4, 250.5)) # hazardous
     else if(pm25 > 150.5) return (Calc_AQI(pm25, 300, 201, 250.4, 150.5)) # very unhealthy
     else if(pm25 > 55.5) return (Calc_AQI(pm25, 200, 151, 150.4, 55.5)) # Unhealthy
     else if(pm25 > 35.5) return (Calc_AQI(pm25, 150, 101, 55.4, 35.5)) # Unhealthy for sensitive groups
@@ -115,6 +116,19 @@ AQI_from_PM <- function(pm25) {
 }
 
 # could also structure it as a case_when
+# going to use a case_when for the associated health level string for the AQI
+healthrating <- function(AQI) {
+  return (case_when(is.nan(AQI) ~ "Unknown",
+            (0 <= AQI & AQI <= 50) ~ "Good",
+            (51 <= AQI & AQI <= 100) ~ "Moderate",
+            (101 <= AQI & AQI <= 150) ~ "Unhealthy for Sensitive Groups",
+            (151 <= AQI & AQI <= 200) ~ "Unhealthy",
+            (201 <= AQI & AQI <= 300) ~ "Very Unhealthy",
+            TRUE ~ "Hazardous"
+  ))
+}
+
+
 
 # test it
 # Calc_AQI(200,300,201,250.4,150.5)
@@ -123,10 +137,12 @@ AQI_from_PM <- function(pm25) {
 # working
 
 # add AQI as a column
-data <- data %>% mutate(US_EPA_PM25_AQI = AQI_from_PM(stats.pm2.5_10minute))
+sensordata <- sensordata %>% mutate(US_EPA_PM25_AQI = AQI_from_PM(stats.pm2.5_10minute), 
+                                    HealthLevel = healthrating(US_EPA_PM25_AQI))
 
 # test it
-data$US_EPA_PM25_AQI
+#sensordata$US_EPA_PM25_AQI
+#sensordata$HealthLevel
 # working!
 
 ```
@@ -136,9 +152,40 @@ data$US_EPA_PM25_AQI
 ### can have a popup with all the stats I care about,  
 ### not just the one value on the purpleair map
 
+# make it interactive to explore tweets from those locations
 ```{r}
 
+# helper funcs
+convert_FtoC <- function(fahrenheit) {
+  return (round((5/9)*(fahrenheit-32),2))
+}
 
+convert_mbar_to_inHg <- function(mbar) {
+  return (round((0.02953)*mbar, 2))
+}
+
+# build popup text
+# temp and humidity have already been corrected above
+popupText = paste0("<b> As of: </b>", as.character(as.POSIXct(sensordata$last_seen, origin = "1970-01-01")), " Pacific<br>",
+                    "<b>AQI: </b>", as.character(sensordata$US_EPA_PM25_AQI), "<br>",
+                   "<b>AQI Health Rating: </b>", as.character(sensordata$HealthLevel), "<br>",
+                   "<b>Temp (&#176;C): </b>", as.character(convert_FtoC(sensordata$temperature)), "<br>",
+                    "<b>Temp (&#176;F): </b>", as.character(sensordata$temperature), "<br>",
+                   "<b>Pressure (mbar): </b>", as.character(sensordata$pressure), "<br>",
+                   "<b>Pressure (inHg): </b>", as.character(convert_mbar_to_inHg(sensordata$pressure)), "<br>",
+                    "<b>Humidity (%): </b>", as.character(sensordata$humidity), "<br>",
+                   "<b>PM2.5: </b>", as.character(sensordata$stats.pm2.5_10minute), "<br>",
+                   "<b>PM1.0: </b>", as.character(sensordata$pm1.0), "<br>",
+                   "<b>PM10: </b>", as.character(sensordata$pm10.0), "<br>",
+                   "<b>Altitude (ft): </b>", as.character(sensordata$altitude), "<br>"
+                    )
+
+site_locations <- leaflet(sensordata) %>%
+  addTiles() %>%
+  addCircleMarkers(lng = ~longitude, lat = ~latitude, popup = ~popupText,
+                   radius = 8, stroke = F, color = "red")
+
+site_locations
 
 ```
 
