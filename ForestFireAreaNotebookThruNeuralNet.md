@@ -292,7 +292,7 @@ end1 <- Sys.time()          # Finishing time
 (time1 <- end1 - start1) # total time
 ```
 
-    ## Time difference of 0.0598371 secs
+    ## Time difference of 0.03075409 secs
 
 ``` r
 # check it out and plot the tree
@@ -736,7 +736,7 @@ end1 <- Sys.time()          # Finishing time
 (time1 <- end1 - start1) # total time
 ```
 
-    ## Time difference of 0.881876 secs
+    ## Time difference of 0.8666499 secs
 
 ``` r
 # takes quite a bit longer than decision tree
@@ -1205,7 +1205,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 4.372284 secs
+    ## Time difference of 4.457934 secs
 
 ``` r
 # predictions
@@ -1221,8 +1221,12 @@ y <- testDataNN[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(
 #postResample(yhat, y)
 
 # visualize it
-plot(m1_nn)
+plot(m1_nn, rep="best")
+```
 
+![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+
+``` r
 # get RMSE - best so far is 1.321 from XGBoost
 (myRMSE(yhat, y))
 ```
@@ -1248,7 +1252,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 12.2979 secs
+    ## Time difference of 11.67757 secs
 
 ``` r
 # predictions
@@ -1261,8 +1265,12 @@ yhat <- pred_nn * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forest
 y <- testDataNN[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
 
 # visualize it
-plot(m2_nn)
+plot(m2_nn, rep="best")
+```
 
+![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+
+``` r
 # get RMSE - best so far is 1.321 from XGBoost
 (myRMSE(yhat, y))
 ```
@@ -1350,30 +1358,30 @@ for(i in seq(1,6,1)) {
 }
 ```
 
-    ## First layer 1 second layer 0 runtime (s) 0.06792498 
-    ## First layer 1 second layer 1 runtime (s) 0.04364705 
-    ## First layer 1 second layer 2 runtime (s) 0.009305 
-    ## First layer 1 second layer 3 runtime (s) 0.04237819 
-    ## First layer 2 second layer 0 runtime (s) 0.663594 
-    ## First layer 2 second layer 1 runtime (s) 0.3831608 
-    ## First layer 2 second layer 2 runtime (s) 2.134118 
-    ## First layer 2 second layer 3 runtime (s) 1.939462 
-    ## First layer 3 second layer 0 runtime (s) 5.907703 
-    ## First layer 3 second layer 1 runtime (s) 1.416418 
-    ## First layer 3 second layer 2 runtime (s) 9.656733 
-    ## First layer 3 second layer 3 runtime (s) 2.532242 
-    ## First layer 4 second layer 0 runtime (s) 8.666666 
-    ## First layer 4 second layer 1 runtime (s) 4.164747 
-    ## First layer 4 second layer 2 runtime (s) 6.269367 
-    ## First layer 4 second layer 3 runtime (s) 0.814723 
-    ## First layer 5 second layer 0 runtime (s) 4.101631 
-    ## First layer 5 second layer 1 runtime (s) 6.467313 
-    ## First layer 5 second layer 2 runtime (s) 22.23234 
-    ## First layer 5 second layer 3 runtime (s) 17.97608 
-    ## First layer 6 second layer 0 runtime (s) 5.911335 
-    ## First layer 6 second layer 1 runtime (s) 37.6045 
-    ## First layer 6 second layer 2 runtime (s) 13.38377 
-    ## First layer 6 second layer 3 runtime (s) 20.2256
+    ## First layer 1 second layer 0 runtime (s) 0.06494403 
+    ## First layer 1 second layer 1 runtime (s) 0.03977203 
+    ## First layer 1 second layer 2 runtime (s) 0.008586168 
+    ## First layer 1 second layer 3 runtime (s) 0.04202604 
+    ## First layer 2 second layer 0 runtime (s) 0.608427 
+    ## First layer 2 second layer 1 runtime (s) 0.3630328 
+    ## First layer 2 second layer 2 runtime (s) 1.824716 
+    ## First layer 2 second layer 3 runtime (s) 1.773066 
+    ## First layer 3 second layer 0 runtime (s) 6.264121 
+    ## First layer 3 second layer 1 runtime (s) 1.318322 
+    ## First layer 3 second layer 2 runtime (s) 9.69724 
+    ## First layer 3 second layer 3 runtime (s) 3.473836 
+    ## First layer 4 second layer 0 runtime (s) 8.343111 
+    ## First layer 4 second layer 1 runtime (s) 4.372067 
+    ## First layer 4 second layer 2 runtime (s) 8.837209 
+    ## First layer 4 second layer 3 runtime (s) 1.307854 
+    ## First layer 5 second layer 0 runtime (s) 4.645633 
+    ## First layer 5 second layer 1 runtime (s) 5.775751 
+    ## First layer 5 second layer 2 runtime (s) 25.08276 
+    ## First layer 5 second layer 3 runtime (s) 20.27119 
+    ## First layer 6 second layer 0 runtime (s) 5.399728 
+    ## First layer 6 second layer 1 runtime (s) 35.4542 
+    ## First layer 6 second layer 2 runtime (s) 13.8985 
+    ## First layer 6 second layer 3 runtime (s) 20.97014
 
 ``` r
 # full runtime
@@ -1425,7 +1433,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 0.06127787 secs
+    ## Time difference of 0.07094121 secs
 
 ``` r
 # predictions
@@ -1438,8 +1446,12 @@ yhat <- pred_nn * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forest
 y <- testDataNN[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
 
 # visualize it
-plot(mbest_nn)
+plot(mbest_nn, rep="best")
+```
 
+![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+
+``` r
 # get RMSE - best so far is 1.321 from XGBoost
 (myRMSE(yhat, y))
 ```

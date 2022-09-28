@@ -521,7 +521,7 @@ y <- testDataNN[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(
 #postResample(yhat, y)
 
 # visualize it
-plot(m1_nn)
+plot(m1_nn, rep="best")
 
 # get RMSE - best so far is 1.321 from XGBoost
 (myRMSE(yhat, y))
@@ -556,7 +556,7 @@ yhat <- pred_nn * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forest
 y <- testDataNN[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
 
 # visualize it
-plot(m2_nn)
+plot(m2_nn, rep="best")
 
 # get RMSE - best so far is 1.321 from XGBoost
 (myRMSE(yhat, y))
@@ -658,7 +658,7 @@ yhat <- pred_nn * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forest
 y <- testDataNN[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
 
 # visualize it
-plot(mbest_nn)
+plot(mbest_nn, rep="best")
 
 # get RMSE - best so far is 1.321 from XGBoost
 (myRMSE(yhat, y))
