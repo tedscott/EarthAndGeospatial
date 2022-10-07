@@ -113,7 +113,7 @@ corrs <- cor(forestNum)
 corrplot(corrs, order = 'hclust', addrect = 2)
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ### Quite a bit of correlation, especially between temp and the FWI values. Note that there are NO strong correlations with our goal, area
 
@@ -224,7 +224,7 @@ summary(mlrModel)
 plot(mlrModel)
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-6-3.png)<!-- -->![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-6-3.png)<!-- -->![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->
 
 ``` r
 # histogram shows us something similar
@@ -233,7 +233,7 @@ ggplot(data=mlrModel, aes(x=mlrModel$residuals)) + geom_histogram()
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-6-5.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-6-5.png)<!-- -->
 
 ## Finally, let’s look at our main measure of goodness we’ll be using, the RMSE (root mean squared error)
 
@@ -292,7 +292,7 @@ end1 <- Sys.time()          # Finishing time
 (time1 <- end1 - start1) # total time
 ```
 
-    ## Time difference of 0.03075409 secs
+    ## Time difference of 0.03933191 secs
 
 ``` r
 # check it out and plot the tree
@@ -608,7 +608,7 @@ summary(myTree)
 fancyRpartPlot(myTree)
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## Check predictions and RMSE
 
@@ -663,7 +663,7 @@ printcp(myTree)
 plotcp(myTree)
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 # prune it with larger and smaller
@@ -671,14 +671,14 @@ prunedTreeMoreCP <- prune.rpart(myTree,cp=0.025)
 fancyRpartPlot(prunedTreeMoreCP)
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
 
 ``` r
 prunedTreeLessCP <- prune.rpart(myTree, cp=0.005)
 fancyRpartPlot(prunedTreeLessCP)
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-11-3.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-11-3.png)<!-- -->
 
 ``` r
 predicted_tree_largeCP <- predict(prunedTreeMoreCP, testData)
@@ -736,7 +736,7 @@ end1 <- Sys.time()          # Finishing time
 (time1 <- end1 - start1) # total time
 ```
 
-    ## Time difference of 0.8666499 secs
+    ## Time difference of 0.623709 secs
 
 ``` r
 # takes quite a bit longer than decision tree
@@ -776,7 +776,7 @@ sqrt(myForest$mse[which.min(myForest$mse)])
 plot(myForest)
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ``` r
 # looks like potentially other candidates but 215 does look to be the min 
@@ -785,7 +785,7 @@ plot(myForest)
 varImpPlot(myForest)
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->
 
 ### not surprisingly, temp, RH, and DMC (Duff moisture code, so probably some kind of wetness) are the most important
 
@@ -847,7 +847,7 @@ tunedForest <- tuneRF(
     ## Warning in xy.coords(x, y, xlabel, ylabel, log): 1 x value <= 0 omitted from
     ## logarithmic plot
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ``` r
 # seems like a lower error with mtry=1
@@ -1018,7 +1018,7 @@ importance_matrix <- xgb.importance(model = final)
 xgb.plot.importance(importance_matrix, xlab = "Feature Importance")
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ### we see that XGBoost has penalized several of the features (with its built in L1 and L2 regularization) so that the remaining best features are temperature, wind, DMC, RH, and FFMC
 
@@ -1104,7 +1104,7 @@ importance_matrix <- xgb.importance(model = final)
 xgb.plot.importance(importance_matrix, xlab = "Feature Importance")
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 ## Hooray, got an even better RMSE with that bit of tuning. Now have a model with a RMSE = 1.321
 
@@ -1205,7 +1205,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 4.457934 secs
+    ## Time difference of 3.446539 secs
 
 ``` r
 # predictions
@@ -1224,7 +1224,7 @@ y <- testDataNN[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(
 plot(m1_nn, rep="best")
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ``` r
 # get RMSE - best so far is 1.321 from XGBoost
@@ -1252,7 +1252,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 11.67757 secs
+    ## Time difference of 10.8271 secs
 
 ``` r
 # predictions
@@ -1268,7 +1268,7 @@ y <- testDataNN[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(
 plot(m2_nn, rep="best")
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 ``` r
 # get RMSE - best so far is 1.321 from XGBoost
@@ -1358,30 +1358,30 @@ for(i in seq(1,6,1)) {
 }
 ```
 
-    ## First layer 1 second layer 0 runtime (s) 0.06494403 
-    ## First layer 1 second layer 1 runtime (s) 0.03977203 
-    ## First layer 1 second layer 2 runtime (s) 0.008586168 
-    ## First layer 1 second layer 3 runtime (s) 0.04202604 
-    ## First layer 2 second layer 0 runtime (s) 0.608427 
-    ## First layer 2 second layer 1 runtime (s) 0.3630328 
-    ## First layer 2 second layer 2 runtime (s) 1.824716 
-    ## First layer 2 second layer 3 runtime (s) 1.773066 
-    ## First layer 3 second layer 0 runtime (s) 6.264121 
-    ## First layer 3 second layer 1 runtime (s) 1.318322 
-    ## First layer 3 second layer 2 runtime (s) 9.69724 
-    ## First layer 3 second layer 3 runtime (s) 3.473836 
-    ## First layer 4 second layer 0 runtime (s) 8.343111 
-    ## First layer 4 second layer 1 runtime (s) 4.372067 
-    ## First layer 4 second layer 2 runtime (s) 8.837209 
-    ## First layer 4 second layer 3 runtime (s) 1.307854 
-    ## First layer 5 second layer 0 runtime (s) 4.645633 
-    ## First layer 5 second layer 1 runtime (s) 5.775751 
-    ## First layer 5 second layer 2 runtime (s) 25.08276 
-    ## First layer 5 second layer 3 runtime (s) 20.27119 
-    ## First layer 6 second layer 0 runtime (s) 5.399728 
-    ## First layer 6 second layer 1 runtime (s) 35.4542 
-    ## First layer 6 second layer 2 runtime (s) 13.8985 
-    ## First layer 6 second layer 3 runtime (s) 20.97014
+    ## First layer 1 second layer 0 runtime (s) 0.0519259 
+    ## First layer 1 second layer 1 runtime (s) 0.04018593 
+    ## First layer 1 second layer 2 runtime (s) 0.009264946 
+    ## First layer 1 second layer 3 runtime (s) 0.04635787 
+    ## First layer 2 second layer 0 runtime (s) 0.5791268 
+    ## First layer 2 second layer 1 runtime (s) 0.386565 
+    ## First layer 2 second layer 2 runtime (s) 1.937765 
+    ## First layer 2 second layer 3 runtime (s) 1.785806 
+    ## First layer 3 second layer 0 runtime (s) 5.830007 
+    ## First layer 3 second layer 1 runtime (s) 1.362018 
+    ## First layer 3 second layer 2 runtime (s) 9.675336 
+    ## First layer 3 second layer 3 runtime (s) 2.565844 
+    ## First layer 4 second layer 0 runtime (s) 7.993643 
+    ## First layer 4 second layer 1 runtime (s) 3.623321 
+    ## First layer 4 second layer 2 runtime (s) 5.571222 
+    ## First layer 4 second layer 3 runtime (s) 0.760479 
+    ## First layer 5 second layer 0 runtime (s) 3.599667 
+    ## First layer 5 second layer 1 runtime (s) 5.490838 
+    ## First layer 5 second layer 2 runtime (s) 37.48368 
+    ## First layer 5 second layer 3 runtime (s) 23.36785 
+    ## First layer 6 second layer 0 runtime (s) 5.770074 
+    ## First layer 6 second layer 1 runtime (s) 34.6437 
+    ## First layer 6 second layer 2 runtime (s) 13.19124 
+    ## First layer 6 second layer 3 runtime (s) 19.64696
 
 ``` r
 # full runtime
@@ -1433,7 +1433,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 0.07094121 secs
+    ## Time difference of 0.08511615 secs
 
 ``` r
 # predictions
@@ -1449,7 +1449,7 @@ y <- testDataNN[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(
 plot(mbest_nn, rep="best")
 ```
 
-![](ForestFireAreaNotebookThruNeuralNet_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
 ``` r
 # get RMSE - best so far is 1.321 from XGBoost
@@ -1459,3 +1459,405 @@ plot(mbest_nn, rep="best")
     ## [1] 1.381802
 
 ### we would want to run a cross-validation to get a better error estimate, but it looks like this neural network varies from around 1.365 to 1.41 for RMSE. Not better than XGBoost, and only sometimes better than previous models.
+
+## What if I play with learningrate? And activation function?
+
+``` r
+start1 <- Sys.time()
+
+# train network with two hidden layers, 1 nodes, and 3 nodes
+mbest_nn <- neuralnet(f,
+                   data = trainDataNN,
+                   hidden = c(1,3),
+                   linear.output = TRUE,
+                   learningrate = 0.01,
+                   act.fct = "tanh") # regression
+
+end1 <- Sys.time() # Finishing time
+(time1 <- end1 - start1) # output total time
+```
+
+    ## Time difference of 5.407792 secs
+
+``` r
+# predictions
+pred_nn <- predict(mbest_nn, testDataNN)
+
+# de-normalize predicted output for logArea
+yhat <- pred_nn * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# same for true values
+y <- testDataNN[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# visualize it
+plot(mbest_nn, rep="best")
+```
+
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+
+``` r
+# get RMSE - best so far is 1.321 from XGBoost
+(myRMSE(yhat, y))
+```
+
+    ## [1] 1.394322
+
+### best RMSE from neural network still hovering around 1.37, so we need to try something else to hopefully see a substantial improvement. According to \[Cortez and Morais, 2007\] P. Cortez and A. Morais. A Data Mining Approach to Predict Forest Fires using Meteorological Data, they got the best performance from a Support Vector Machine, by using Support Vector Regression. So, for a final attempt, give that a go.
+
+``` r
+# need e0171 package for svm
+
+#install.packages("e1071")
+library(e1071)
+
+# normalized data sets for svm
+trainDataNormSVM <- trainDataNN
+testDataNormSVM <- testDataNN
+
+# not normalized data
+trainDataSVM <- trainingData
+testDataSVM <- testData
+
+# build model on norm data, default cost=1 and epsilon=0.1
+svmMod <- svm(f, trainDataNormSVM)
+print(svmMod)
+```
+
+    ## 
+    ## Call:
+    ## svm(formula = f, data = trainDataNormSVM)
+    ## 
+    ## 
+    ## Parameters:
+    ##    SVM-Type:  eps-regression 
+    ##  SVM-Kernel:  radial 
+    ##        cost:  1 
+    ##       gamma:  0.1 
+    ##     epsilon:  0.1 
+    ## 
+    ## 
+    ## Number of Support Vectors:  385
+
+``` r
+# predictions to get first rmse
+predNormSVM <- predict(svmMod,testDataNormSVM)
+
+# de-normalize predicted output for logArea
+yhat <- predNormSVM * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# same for true values
+y <- testDataNormSVM[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# visualize it
+plot(svmMod)
+
+# get RMSE - best so far is 1.321 from XGBoost
+(myRMSE(yhat, y))
+```
+
+    ## [1] 1.364709
+
+### not yet better. Time to tune it. Use tune() from e1071 per help from <https://www.svm-tutorial.com/2014/10/support-vector-regression-r/> and <https://www.rdocumentation.org/packages/e1071/versions/1.7-11/topics/tune>
+
+``` r
+start1 <- Sys.time()
+
+# use tune() to tune hyperparameters
+tuneResult <- tune(svm, f,  data = trainDataNormSVM, 
+                ranges = list(epsilon = seq(0,1,0.1), cost = 2^(2:9))
+  ) 
+
+end1 <- Sys.time() # Finishing time
+(time1 <- end1 - start1) # output total time
+```
+
+    ## Time difference of 1.31089 mins
+
+``` r
+# print results
+print(tuneResult) # best performance: eps = 0.7, cost = 4
+```
+
+    ## 
+    ## Parameter tuning of 'svm':
+    ## 
+    ## - sampling method: 10-fold cross validation 
+    ## 
+    ## - best parameters:
+    ##  epsilon cost
+    ##      0.7    4
+    ## 
+    ## - best performance: 0.04209782
+
+``` r
+# Draw the first tuning graph 
+plot(tuneResult)
+```
+
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+
+### best parameters epsilon 0.7, cost 4. Re-run with a finer scale near those values.
+
+``` r
+start1 <- Sys.time()
+
+tuneResult <- tune(svm, f,  data = trainDataNormSVM, 
+                ranges = list(epsilon = seq(0.6,0.8,0.1), cost = seq(0.1,5,0.1))
+  ) 
+
+end1 <- Sys.time() # Finishing time
+(time1 <- end1 - start1) # output total time
+```
+
+    ## Time difference of 1.05044 mins
+
+``` r
+# print results
+print(tuneResult) # best performance: eps = 0.7, cost = 0.5
+```
+
+    ## 
+    ## Parameter tuning of 'svm':
+    ## 
+    ## - sampling method: 10-fold cross validation 
+    ## 
+    ## - best parameters:
+    ##  epsilon cost
+    ##      0.7  0.5
+    ## 
+    ## - best performance: 0.04007521
+
+``` r
+# Draw the first tuning graph 
+plot(tuneResult)
+```
+
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
+
+### new best result is eps = 0.7, cost = 0.5. Build model with those and check RMSE
+
+``` r
+# build model with those parameters
+start1 <- Sys.time()
+
+svmModTuned <- svm(f, trainDataNormSVM, epsilon=0.7, cost=0.5)
+
+end1 <- Sys.time() # Finishing time
+(time1 <- end1 - start1) # output total time
+```
+
+    ## Time difference of 0.04412007 secs
+
+``` r
+# spit out results
+print(svmModTuned)
+```
+
+    ## 
+    ## Call:
+    ## svm(formula = f, data = trainDataNormSVM, epsilon = 0.7, cost = 0.5)
+    ## 
+    ## 
+    ## Parameters:
+    ##    SVM-Type:  eps-regression 
+    ##  SVM-Kernel:  radial 
+    ##        cost:  0.5 
+    ##       gamma:  0.1 
+    ##     epsilon:  0.7 
+    ## 
+    ## 
+    ## Number of Support Vectors:  236
+
+``` r
+# predictions to get first rmse
+predNormSVM <- predict(svmModTuned,testDataNormSVM)
+
+# de-normalize predicted output for logArea
+yhat <- predNormSVM * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# same for true values
+y <- testDataNormSVM[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# visualize it
+plot(svmModTuned)
+
+# get RMSE - best so far is 1.321 from XGBoost
+(myRMSE(yhat, y))
+```
+
+    ## [1] 1.345979
+
+### Hmm, 1.346 is a decent RMSE, but not the best as XGBoost got a 1.321. Try the gamma parameter.
+
+``` r
+start1 <- Sys.time()
+
+tuneResult <- tune(svm, f,  data = trainDataNormSVM, 
+                ranges = list(epsilon = seq(0.6,0.8,0.1), gamma = 10^(-1:2))
+  ) 
+
+end1 <- Sys.time() # Finishing time
+(time1 <- end1 - start1) # output total time
+```
+
+    ## Time difference of 4.838832 secs
+
+``` r
+# print results
+print(tuneResult) # best performance: eps = 0.7, cost = 0.5
+```
+
+    ## 
+    ## Parameter tuning of 'svm':
+    ## 
+    ## - sampling method: 10-fold cross validation 
+    ## 
+    ## - best parameters:
+    ##  epsilon gamma
+    ##      0.6    10
+    ## 
+    ## - best performance: 0.04048912
+
+``` r
+# Draw the first tuning graph 
+plot(tuneResult)
+```
+
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+
+### Hmm, still not much clarity. Trying eps=0.6 and gamma=10 for a model. OK, I did and it wasn’t better so manually exploring for a bit…
+
+``` r
+# build model with those parameters
+start1 <- Sys.time()
+
+svmModTuned <- svm(f, trainDataNormSVM, epsilon=0.25, cost=0.5, gamma=1e5)
+
+end1 <- Sys.time() # Finishing time
+(time1 <- end1 - start1) # output total time
+```
+
+    ## Time difference of 0.03200984 secs
+
+``` r
+# spit out results
+print(svmModTuned)
+```
+
+    ## 
+    ## Call:
+    ## svm(formula = f, data = trainDataNormSVM, epsilon = 0.25, cost = 0.5, 
+    ##     gamma = 1e+05)
+    ## 
+    ## 
+    ## Parameters:
+    ##    SVM-Type:  eps-regression 
+    ##  SVM-Kernel:  radial 
+    ##        cost:  0.5 
+    ##       gamma:  1e+05 
+    ##     epsilon:  0.25 
+    ## 
+    ## 
+    ## Number of Support Vectors:  365
+
+``` r
+# predictions to get first rmse
+predNormSVM <- predict(svmModTuned,testDataNormSVM)
+
+# de-normalize predicted output for logArea
+yhat <- predNormSVM * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# same for true values
+y <- testDataNormSVM[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# visualize it
+plot(svmModTuned)
+
+# get RMSE - best so far is 1.321 from XGBoost
+(myRMSE(yhat, y))
+```
+
+    ## [1] 1.323602
+
+### OK, this seems best. RMSE = 1.3236 is essentially the same as XGBoost. Epsilon=0.25, cost=0.5, gamma=1e5. Time to try with the non-normalized data to see if that makes any difference.
+
+``` r
+# build model on non-normalized data, use parameters from above
+svmMod3 <- svm(f, trainDataSVM, epsilon=0.25, cost=0.5, gamma=1e5)
+print(svmMod3)
+```
+
+    ## 
+    ## Call:
+    ## svm(formula = f, data = trainDataSVM, epsilon = 0.25, cost = 0.5, 
+    ##     gamma = 1e+05)
+    ## 
+    ## 
+    ## Parameters:
+    ##    SVM-Type:  eps-regression 
+    ##  SVM-Kernel:  radial 
+    ##        cost:  0.5 
+    ##       gamma:  1e+05 
+    ##     epsilon:  0.25 
+    ## 
+    ## 
+    ## Number of Support Vectors:  365
+
+``` r
+# predictions to get first rmse
+predSVM <- predict(svmMod3,testDataSVM)
+
+# de-normalize predicted output for logArea
+yhat <- predSVM #* (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# same for true values
+y <- testDataSVM[, 12] #* (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# visualize it
+plot(svmMod3)
+
+# get RMSE - best so far is 1.321 from XGBoost
+(myRMSE(yhat, y))
+```
+
+    ## [1] 1.323602
+
+### SAME! Best I can do, I guess. Winner is XGBoost with 1.321 RMSE on logArea.
+
+## try grid search instead of tune
+
+``` r
+#grid search using denormalized data
+
+hyper_grid <- expand.grid(epsilon = seq(0.3, 0.5, 0.05),
+                          cost = seq(0.2, 0.5, 0.05))
+min_svm_rmse <- 100
+min_epsilon <- 1
+min_cost <- 1
+min_runtime <- 100
+
+for (j in 1:nrow(hyper_grid)) {
+  set.seed(732)
+  start1 <- Sys.time()
+  svm_m = svm(f, data=trainingData, epsilon = hyper_grid$epsilon[j], cost = hyper_grid$cost[j])
+  end1 <- Sys.time() # Finishing time
+  runtime <- end1 - start1 # output total time
+  
+  yhat <- predict(svm_m, testData)
+  
+  svm_rmse <- myRMSE(testData$logArea, yhat)
+  
+  if (svm_rmse < min_svm_rmse){
+    min_runtime <- runtime
+    min_svm_rmse <- svm_rmse
+    min_epsilon <- as.numeric(hyper_grid$epsilon[j])
+    min_cost <- as.numeric(hyper_grid$cost[j])
+  }
+}
+cat("\n",min_svm_rmse, min_epsilon, min_cost, min_runtime)
+```
+
+    ## 
+    ##  1.31598 0.35 0.3 0.05032396
+
+## OH HO! Finally a better result, and better than XGBoost! And so fast! Much better than tune(). New best RMSE = 1.316 from SVM with epsilon=0.35, cost=0.3
