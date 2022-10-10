@@ -292,7 +292,7 @@ end1 <- Sys.time()          # Finishing time
 (time1 <- end1 - start1) # total time
 ```
 
-    ## Time difference of 0.03933191 secs
+    ## Time difference of 0.02409291 secs
 
 ``` r
 # check it out and plot the tree
@@ -736,7 +736,7 @@ end1 <- Sys.time()          # Finishing time
 (time1 <- end1 - start1) # total time
 ```
 
-    ## Time difference of 0.623709 secs
+    ## Time difference of 0.61252 secs
 
 ``` r
 # takes quite a bit longer than decision tree
@@ -1205,7 +1205,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 3.446539 secs
+    ## Time difference of 3.144431 secs
 
 ``` r
 # predictions
@@ -1252,7 +1252,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 10.8271 secs
+    ## Time difference of 10.43473 secs
 
 ``` r
 # predictions
@@ -1358,30 +1358,30 @@ for(i in seq(1,6,1)) {
 }
 ```
 
-    ## First layer 1 second layer 0 runtime (s) 0.0519259 
-    ## First layer 1 second layer 1 runtime (s) 0.04018593 
-    ## First layer 1 second layer 2 runtime (s) 0.009264946 
-    ## First layer 1 second layer 3 runtime (s) 0.04635787 
-    ## First layer 2 second layer 0 runtime (s) 0.5791268 
-    ## First layer 2 second layer 1 runtime (s) 0.386565 
-    ## First layer 2 second layer 2 runtime (s) 1.937765 
-    ## First layer 2 second layer 3 runtime (s) 1.785806 
-    ## First layer 3 second layer 0 runtime (s) 5.830007 
-    ## First layer 3 second layer 1 runtime (s) 1.362018 
-    ## First layer 3 second layer 2 runtime (s) 9.675336 
-    ## First layer 3 second layer 3 runtime (s) 2.565844 
-    ## First layer 4 second layer 0 runtime (s) 7.993643 
-    ## First layer 4 second layer 1 runtime (s) 3.623321 
-    ## First layer 4 second layer 2 runtime (s) 5.571222 
-    ## First layer 4 second layer 3 runtime (s) 0.760479 
-    ## First layer 5 second layer 0 runtime (s) 3.599667 
-    ## First layer 5 second layer 1 runtime (s) 5.490838 
-    ## First layer 5 second layer 2 runtime (s) 37.48368 
-    ## First layer 5 second layer 3 runtime (s) 23.36785 
-    ## First layer 6 second layer 0 runtime (s) 5.770074 
-    ## First layer 6 second layer 1 runtime (s) 34.6437 
-    ## First layer 6 second layer 2 runtime (s) 13.19124 
-    ## First layer 6 second layer 3 runtime (s) 19.64696
+    ## First layer 1 second layer 0 runtime (s) 0.05069709 
+    ## First layer 1 second layer 1 runtime (s) 0.04029322 
+    ## First layer 1 second layer 2 runtime (s) 0.008862972 
+    ## First layer 1 second layer 3 runtime (s) 0.04075503 
+    ## First layer 2 second layer 0 runtime (s) 0.5673501 
+    ## First layer 2 second layer 1 runtime (s) 0.3515589 
+    ## First layer 2 second layer 2 runtime (s) 1.792265 
+    ## First layer 2 second layer 3 runtime (s) 1.704695 
+    ## First layer 3 second layer 0 runtime (s) 5.322222 
+    ## First layer 3 second layer 1 runtime (s) 1.209795 
+    ## First layer 3 second layer 2 runtime (s) 9.15146 
+    ## First layer 3 second layer 3 runtime (s) 2.347345 
+    ## First layer 4 second layer 0 runtime (s) 7.640714 
+    ## First layer 4 second layer 1 runtime (s) 3.527868 
+    ## First layer 4 second layer 2 runtime (s) 5.497817 
+    ## First layer 4 second layer 3 runtime (s) 0.7467909 
+    ## First layer 5 second layer 0 runtime (s) 3.280088 
+    ## First layer 5 second layer 1 runtime (s) 4.758291 
+    ## First layer 5 second layer 2 runtime (s) 20.23889 
+    ## First layer 5 second layer 3 runtime (s) 17.36091 
+    ## First layer 6 second layer 0 runtime (s) 5.233807 
+    ## First layer 6 second layer 1 runtime (s) 32.80136 
+    ## First layer 6 second layer 2 runtime (s) 12.39689 
+    ## First layer 6 second layer 3 runtime (s) 18.48582
 
 ``` r
 # full runtime
@@ -1433,7 +1433,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 0.08511615 secs
+    ## Time difference of 0.05882907 secs
 
 ``` r
 # predictions
@@ -1477,7 +1477,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 5.407792 secs
+    ## Time difference of 5.141045 secs
 
 ``` r
 # predictions
@@ -1571,7 +1571,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 1.31089 mins
+    ## Time difference of 1.24021 mins
 
 ``` r
 # print results
@@ -1609,7 +1609,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 1.05044 mins
+    ## Time difference of 59.34985 secs
 
 ``` r
 # print results
@@ -1646,7 +1646,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 0.04412007 secs
+    ## Time difference of 0.04132795 secs
 
 ``` r
 # spit out results
@@ -1700,7 +1700,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 4.838832 secs
+    ## Time difference of 4.639746 secs
 
 ``` r
 # print results
@@ -1737,7 +1737,7 @@ end1 <- Sys.time() # Finishing time
 (time1 <- end1 - start1) # output total time
 ```
 
-    ## Time difference of 0.03200984 secs
+    ## Time difference of 0.02784991 secs
 
 ``` r
 # spit out results
@@ -1858,6 +1858,80 @@ cat("\n",min_svm_rmse, min_epsilon, min_cost, min_runtime)
 ```
 
     ## 
-    ##  1.31598 0.35 0.3 0.05032396
+    ##  1.31598 0.35 0.3 0.048774
 
 ## OH HO! Finally a better result, and better than XGBoost! And so fast! Much better than tune(). New best RMSE = 1.316 from SVM with epsilon=0.35, cost=0.3
+
+``` r
+# plot results
+df <- data.frame(actual = testData$logArea, pred = yhat)
+ggplot(df, mapping=aes(x = actual, y = pred)) +
+  geom_point() +
+  ggtitle('logArea predicted vs actual for best SVM') + geom_smooth(method="lm")
+```
+
+    ## `geom_smooth()` using formula 'y ~ x'
+
+![](ForestFireAreaNotebookThruSVM_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+
+## To wrap this up, let’s make the best model according to Cortez and Morais. They found a SVM with only the meteorological variables (temp, RH, wind, rain), min-max normalized data, cost = 3, ![{\epsilon} = 3{\sigma}\sqrt{\ln{N}/N}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%7B%5Cepsilon%7D%20%3D%203%7B%5Csigma%7D%5Csqrt%7B%5Cln%7BN%7D%2FN%7D "{\epsilon} = 3{\sigma}\sqrt{\ln{N}/N}") and ![{\gamma} = 2^{-3}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%7B%5Cgamma%7D%20%3D%202%5E%7B-3%7D "{\gamma} = 2^{-3}") yielded the best fit, especially for smaller fires, which dominate the data set.
+
+``` r
+# build model with those parameters
+
+# Cortez & Morais model params
+eps <- 3*sd(forestNumNorm$logArea)*sqrt(log(nrow(forestNumNorm))/nrow(forestNumNorm))
+C <- 3
+gam <- 2^-3
+
+start1 <- Sys.time()
+
+svmModCandM <- svm(logArea ~ temp + RH + wind + rain, trainDataNormSVM, epsilon=eps, cost=C, gamma=gam)
+
+end1 <- Sys.time() # Finishing time
+(time1 <- end1 - start1) # output total time
+```
+
+    ## Time difference of 0.06284904 secs
+
+``` r
+# spit out results
+print(svmModCandM)
+```
+
+    ## 
+    ## Call:
+    ## svm(formula = logArea ~ temp + RH + wind + rain, data = trainDataNormSVM, 
+    ##     epsilon = eps, cost = C, gamma = gam)
+    ## 
+    ## 
+    ## Parameters:
+    ##    SVM-Type:  eps-regression 
+    ##  SVM-Kernel:  radial 
+    ##        cost:  3 
+    ##       gamma:  0.125 
+    ##     epsilon:  0.06592716 
+    ## 
+    ## 
+    ## Number of Support Vectors:  384
+
+``` r
+# predictions to get first rmse
+predNormSVM <- predict(svmModCandM,testDataNormSVM)
+
+# de-normalize predicted output for logArea
+yhat <- predNormSVM * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# same for true values
+y <- testDataNormSVM[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# visualize it
+plot(svmModCandM)
+
+# get RMSE - best so far is 1.321 from XGBoost
+(myRMSE(yhat, y))
+```
+
+    ## [1] 1.405082
+
+### well, that model is not better than mine! Guess I should contact them :)

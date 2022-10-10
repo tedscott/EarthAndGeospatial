@@ -667,8 +667,6 @@ plot(mbest_nn, rep="best")
 
 ### we would want to run a cross-validation to get a better error estimate, but it looks like this neural network varies from around 1.365 to 1.41 for RMSE. Not better than XGBoost, and only sometimes better than previous models.
 
-
-
 ## What if I play with learningrate? And activation function?
 
 ```{r}
@@ -739,7 +737,7 @@ plot(svmMod)
 
 ```
 
-### not yet better. Time to tune it. Use tune() from e1071 per help from https://www.svm-tutorial.com/2014/10/support-vector-regression-r/ and https://www.rdocumentation.org/packages/e1071/versions/1.7-11/topics/tune
+### not yet better. Time to tune it. Use tune() from e1071 per help from <https://www.svm-tutorial.com/2014/10/support-vector-regression-r/> and <https://www.rdocumentation.org/packages/e1071/versions/1.7-11/topics/tune>
 
 ```{r}
 start1 <- Sys.time()
@@ -779,8 +777,6 @@ plot(tuneResult)
 ```
 
 ### new best result is eps = 0.7, cost = 0.5. Build model with those and check RMSE
-
-
 
 ```{r}
 # build model with those parameters
@@ -886,8 +882,8 @@ plot(svmMod3)
 
 ### SAME! Best I can do, I guess. Winner is XGBoost with 1.321 RMSE on logArea.
 
-
 ## try grid search instead of tune
+
 ```{r}
 #grid search using denormalized data
 
@@ -918,6 +914,7 @@ for (j in 1:nrow(hyper_grid)) {
 }
 cat("\n",min_svm_rmse, min_epsilon, min_cost, min_runtime)
 ```
+
 ## OH HO! Finally a better result, and better than XGBoost! And so fast! Much better than tune(). New best RMSE = 1.316 from SVM with epsilon=0.35, cost=0.3
 
 ```{r}
@@ -928,4 +925,42 @@ ggplot(df, mapping=aes(x = actual, y = pred)) +
   ggtitle('logArea predicted vs actual for best SVM') + geom_smooth(method="lm")
 ```
 
+## To wrap this up, let's make the best model according to Cortez and Morais. They found a SVM with only the meteorological variables (temp, RH, wind, rain), min-max normalized data, cost = 3, ${\epsilon} = 3{\sigma}\sqrt{\ln{N}/N}$ and ${\gamma} = 2^{-3}$ yielded the best fit, especially for smaller fires, which dominate the data set.
 
+```{r}
+# build model with those parameters
+
+# Cortez & Morais model params
+eps <- 3*sd(forestNumNorm$logArea)*sqrt(log(nrow(forestNumNorm))/nrow(forestNumNorm))
+C <- 3
+gam <- 2^-3
+
+start1 <- Sys.time()
+
+svmModCandM <- svm(logArea ~ temp + RH + wind + rain, trainDataNormSVM, epsilon=eps, cost=C, gamma=gam)
+
+end1 <- Sys.time() # Finishing time
+(time1 <- end1 - start1) # output total time
+
+# spit out results
+print(svmModCandM)
+
+# predictions to get first rmse
+predNormSVM <- predict(svmModCandM,testDataNormSVM)
+
+# de-normalize predicted output for logArea
+yhat <- predNormSVM * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# same for true values
+y <- testDataNormSVM[, 11] * (max(forestNum$logArea) - min(forestNum$logArea)) + min(forestNum$logArea)
+
+# visualize it
+plot(svmModCandM)
+
+# get RMSE - best so far is 1.321 from XGBoost
+(myRMSE(yhat, y))
+
+
+```
+
+### well, that model is not better than mine! Guess I should contact them :)

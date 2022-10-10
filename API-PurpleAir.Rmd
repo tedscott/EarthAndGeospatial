@@ -76,6 +76,7 @@ sensordata
 ```
 
 # for PM2.5 need to do a conversion to generate the standard AQI
+
 ## note that PurpleAir maps show the 10 min avg value, converted to AQI
 
 ```{r}
@@ -148,11 +149,15 @@ sensordata <- sensordata %>% mutate(US_EPA_PM25_AQI = AQI_from_PM(stats.pm2.5_10
 ```
 
 # Should also build a map of my own
+
 ### maybe a Leaflet interactive - see the twitter sentiment assignment
-### can have a popup with all the stats I care about,  
+
+### can have a popup with all the stats I care about,
+
 ### not just the one value on the purpleair map
 
 # make it interactive to explore tweets from those locations
+
 ```{r}
 
 # helper funcs
@@ -190,4 +195,3 @@ site_locations
 ```
 
 # and then on to a shiny dashboard
-
